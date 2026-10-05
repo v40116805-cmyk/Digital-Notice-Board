@@ -1,0 +1,1207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard - Digital Notice Board</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: #fff8fb;
+            color: #171717;
+        }
+
+        /* ================= HEADER ================= */
+
+        .header {
+            background: linear-gradient(90deg, #d50063, #b90058);
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 122px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo {
+            width: 68px;
+            height: 68px;
+            border: 2px solid white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .college-name h1 {
+            font-size: 27px;
+            line-height: 1.05;
+            letter-spacing: 0.3px;
+        }
+
+        .college-name p {
+            margin-top: 8px;
+            font-size: 13px;
+        }
+
+        .header-right {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+        }
+
+        .date-time {
+            font-size: 14px;
+        }
+
+        .live {
+            font-size: 13px;
+        }
+
+        .live-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #25d366;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .notification-btn {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            border: none;
+            background: white;
+            cursor: pointer;
+            font-size: 25px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .notification-btn:hover {
+            transform: scale(1.05);
+        }
+
+        /* ================= MAIN ================= */
+
+        .container {
+            max-width: 1225px;
+            margin: 12px auto 0;
+            padding: 0 12px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #eadde3;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 7px rgba(0, 0, 0, 0.05);
+        }
+
+        /* ================= SEARCH ================= */
+
+        .search-panel {
+            padding: 14px;
+        }
+
+        .search-row {
+            display: flex;
+            gap: 9px;
+        }
+
+        .search-input {
+            flex: 1;
+            height: 42px;
+            border: 1px solid #d6cbd1;
+            border-radius: 7px;
+            padding: 0 14px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .search-input:focus {
+            border-color: #d50063;
+        }
+
+        .search-button {
+            width: 110px;
+            border: none;
+            border-radius: 8px;
+            background: #d50063;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .search-button:hover {
+            background: #b90058;
+        }
+
+        .smart-search {
+            margin-top: 11px;
+            font-size: 12px;
+            color: #444;
+        }
+
+        /* ================= SECTION HEADER ================= */
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 16px 8px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .view-all {
+            color: #ad0054;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* ================= DEADLINES ================= */
+
+        .deadline-content {
+            min-height: 82px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .deadline-message {
+            text-align: center;
+        }
+
+        /* ================= CATEGORY ================= */
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            gap: 9px;
+            padding: 4px 14px 14px;
+        }
+
+        .category-card {
+            min-height: 102px;
+            border: 1px solid #d8dfe9;
+            border-radius: 9px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+            background: #f7faff;
+        }
+
+        .category-card:nth-child(2) {
+            background: #f4fbf3;
+        }
+
+        .category-card:nth-child(3) {
+            background: #faf2ff;
+        }
+
+        .category-card:nth-child(4) {
+            background: #fff9ed;
+        }
+
+        .category-card:nth-child(5) {
+            background: #f0fbfb;
+        }
+
+        .category-card:nth-child(6) {
+            background: #f3f7ff;
+        }
+
+        .category-card:nth-child(7) {
+            background: #fff8f1;
+        }
+
+        .category-card:nth-child(8) {
+            background: #fff1f7;
+        }
+
+        .category-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-icon {
+            font-size: 27px;
+            margin-bottom: 6px;
+        }
+
+        .category-name {
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .category-count {
+            margin-top: 6px;
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        /* ================= LATEST NOTICES ================= */
+
+        .latest-header {
+            padding-bottom: 10px;
+        }
+
+        .total-count {
+            font-size: 13px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            padding: 0 14px 14px;
+        }
+
+        .notice-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 950px;
+        }
+
+        .notice-table th {
+            background: #fff0f5;
+            border-top: 1px solid #eedce4;
+            border-bottom: 1px solid #ead8df;
+            padding: 9px 8px;
+            text-align: left;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+
+        .notice-table td {
+            border-bottom: 1px solid #eee;
+            padding: 10px 8px;
+            font-size: 12px;
+            vertical-align: middle;
+        }
+
+        .notice-number {
+            text-align: center;
+        }
+
+        .notice-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .posted-by {
+            color: #666;
+            font-size: 10px;
+            line-height: 1.4;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 6px;
+            background: #f4e9ff;
+            color: #7a369e;
+            font-weight: bold;
+            font-size: 10px;
+        }
+
+        .status-new {
+            color: #299b50;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: #38a759;
+            margin-right: 5px;
+        }
+
+        .view-file {
+            border: none;
+            background: #fff0f7;
+            color: #a90052;
+            padding: 6px 9px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .view-file:hover {
+            background: #f9d9e9;
+        }
+
+        /* ================= ARCHIVE ================= */
+
+        .archive-content {
+            min-height: 105px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #777;
+            font-size: 14px;
+        }
+
+        .archive-message {
+            text-align: center;
+        }
+
+        .archive-link {
+            color: #a90052;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        /* ================= SEARCH RESULT MESSAGE ================= */
+
+        .no-results {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* ================= FOOTER ================= */
+
+        .footer {
+            border-top: 3px solid #d50063;
+            margin-top: 20px;
+            min-height: 8px;
+        }
+
+        /* ================= NOTIFICATION POPUP ================= */
+
+        .notification-message {
+            display: none;
+            position: fixed;
+            top: 95px;
+            right: 30px;
+            background: white;
+            border: 1px solid #e5d6dd;
+            border-radius: 10px;
+            padding: 15px 18px;
+            width: 270px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+        }
+
+        .notification-message h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #a90052;
+        }
+
+        .notification-message p {
+            font-size: 12px;
+            color: #555;
+        }
+
+        /* ================= RESPONSIVE ================= */
+
+        @media (max-width: 1000px) {
+            .category-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .header {
+                padding: 15px 18px;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .header-right {
+                width: 100%;
+                align-items: flex-start;
+            }
+
+            .college-name h1 {
+                font-size: 21px;
+            }
+
+            .logo {
+                width: 55px;
+                height: 55px;
+                font-size: 24px;
+            }
+
+            .search-row {
+                flex-direction: column;
+            }
+
+            .search-button {
+                width: 100%;
+                height: 42px;
+            }
+
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 450px) {
+            .category-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .section-header {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= HEADER ================= -->
+
+<header class="header">
+
+    <div class="header-left">
+
+        <div class="logo">
+            G
+        </div>
+
+        <div class="college-name">
+            <h1>
+                GSSSIETW, MYSORE<br>
+                DIGITAL NOTICE BOARD
+            </h1>
+
+            <p>
+                Real-time Updates &nbsp;•&nbsp; Stay Informed &nbsp;•&nbsp; Never Miss Important Notices
+            </p>
+        </div>
+
+    </div>
+
+    <div class="header-right">
+
+        <div class="date-time" id="dateTime">
+            📅 Monday, 05 Oct 2026 | 03:33 PM
+        </div>
+
+        <div class="live">
+            <span class="live-dot"></span>
+            Live
+        </div>
+
+        <button
+            class="notification-btn"
+            id="notificationButton"
+            title="Notifications">
+            🔔
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- Notification popup -->
+
+<div class="notification-message" id="notificationMessage">
+
+    <h3>🔔 Notifications</h3>
+
+    <p>
+        You are viewing the latest notices and updates.
+    </p>
+
+</div>
+
+
+<main class="container">
+
+    <!-- ================= SEARCH ================= -->
+
+    <section class="panel search-panel">
+
+        <div class="search-row">
+
+            <input
+                type="text"
+                id="searchInput"
+                class="search-input"
+                placeholder="Search notice, placement, exam, CSE, AI&ML, faculty, department..."
+            >
+
+            <button
+                class="search-button"
+                id="searchButton">
+                🔍 Search
+            </button>
+
+        </div>
+
+        <div class="smart-search">
+            💡 Smart Search: p = Placement, s = Scholarship, e = Exams,
+            h = Hackathon. You can also search CSE, AI&ML, department,
+            faculty name, year, semester or notice keywords.
+        </div>
+
+    </section>
+
+
+    <!-- ================= UPCOMING DEADLINES ================= -->
+
+    <section class="panel">
+
+        <div class="section-header">
+
+            <div class="section-title">
+                🔔 UPCOMING DEADLINES
+            </div>
+
+            <div class="view-all" id="viewDeadlines">
+                View All →
+            </div>
+
+        </div>
+
+        <div class="deadline-content">
+
+            <div class="deadline-message" id="deadlineMessage">
+                🎉 No upcoming deadlines.
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CATEGORIES ================= -->
+
+    <section class="panel">
+
+        <div class="section-header">
+
+            <div class="section-title">
+                📚 BROWSE BY CATEGORY
+            </div>
+
+        </div>
+
+        <div class="category-grid">
+
+            <div class="category-card" data-category="Placement">
+                <div class="category-icon">💼</div>
+                <div class="category-name">Placement</div>
+                <div class="category-count" id="countPlacement">0</div>
+            </div>
+
+            <div class="category-card" data-category="Scholarship">
+                <div class="category-icon">🎓</div>
+                <div class="category-name">Scholarship</div>
+                <div class="category-count" id="countScholarship">0</div>
+            </div>
+
+            <div class="category-card" data-category="Exams">
+                <div class="category-icon">📄</div>
+                <div class="category-name">Exams</div>
+                <div class="category-count" id="countExams">1</div>
+            </div>
+
+            <div class="category-card" data-category="Hackathon">
+                <div class="category-icon">🏆</div>
+                <div class="category-name">Hackathon</div>
+                <div class="category-count" id="countHackathon">0</div>
+            </div>
+
+            <div class="category-card" data-category="Events">
+                <div class="category-icon">🎉</div>
+                <div class="category-name">Events</div>
+                <div class="category-count" id="countEvents">0</div>
+            </div>
+
+            <div class="category-card" data-category="Workshops">
+                <div class="category-icon">👥</div>
+                <div class="category-name">Workshops</div>
+                <div class="category-count" id="countWorkshops">0</div>
+            </div>
+
+            <div class="category-card" data-category="Circulars">
+                <div class="category-icon">📜</div>
+                <div class="category-name">Circulars</div>
+                <div class="category-count" id="countCirculars">0</div>
+            </div>
+
+            <div class="category-card" data-category="Holidays">
+                <div class="category-icon">🌴</div>
+                <div class="category-name">Holidays</div>
+                <div class="category-count" id="countHolidays">0</div>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= LATEST NOTICES ================= -->
+
+    <section class="panel">
+
+        <div class="section-header latest-header">
+
+            <div class="section-title">
+                📢 LATEST NOTICES
+            </div>
+
+            <div class="total-count">
+                Total: <span id="totalCount">1</span>
+            </div>
+
+        </div>
+
+
+        <div class="table-container">
+
+            <table class="notice-table">
+
+                <thead>
+
+                    <tr>
+                        <th>#</th>
+                        <th>Notice</th>
+                        <th>Category</th>
+                        <th>Department</th>
+                        <th>Year</th>
+                        <th>Semester</th>
+                        <th>Scholarship</th>
+                        <th>Deadline</th>
+                        <th>Status</th>
+                        <th>File</th>
+                    </tr>
+
+                </thead>
+
+                <tbody id="noticeTableBody">
+
+                    <tr
+                        class="notice-row"
+                        data-category="Exams"
+                        data-search="exams notice supritha cse ai ml all departments exams examination">
+
+                        <td class="notice-number">
+                            1
+                        </td>
+
+                        <td>
+
+                            <div class="notice-title">
+                                Exams Notice
+                            </div>
+
+                            <div class="posted-by">
+                                By: Supritha<br>
+                                🏫 CSE (AI & ML)<br>
+                                🕒 Published: 18 Sep 2026, 12:39 PM
+                            </div>
+
+                        </td>
+
+                        <td>
+
+                            <span class="category-badge">
+                                Exams
+                            </span>
+
+                        </td>
+
+                        <td>
+                            All Departments
+                        </td>
+
+                        <td>
+                            —
+                        </td>
+
+                        <td>
+                            —
+                        </td>
+
+                        <td>
+                            —
+                        </td>
+
+                        <td>
+                            —
+                        </td>
+
+                        <td>
+
+                            <span class="status-new">
+                                <span class="status-dot"></span>
+                                NEW
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <button
+                                class="view-file"
+                                onclick="viewNotice()">
+                                👁 View
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div
+            class="no-results"
+            id="noResults">
+
+            🔎 No notices found matching your search.
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= PREVIOUS YEAR NOTICES ================= -->
+
+    <section class="panel">
+
+        <div class="section-header">
+
+            <div class="section-title">
+                📚 PREVIOUS YEAR NOTICES
+            </div>
+
+            <div class="view-all" id="archiveButton">
+                Year-wise Archive
+            </div>
+
+        </div>
+
+        <div class="archive-content">
+
+            <div class="archive-message">
+
+                📪 No previous year notices available yet.
+
+                <br><br>
+
+                <span
+                    class="archive-link"
+                    id="archiveLink">
+                    View Year-wise Archive
+                </span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<footer class="footer"></footer>
+
+
+<script>
+
+    /* =====================================================
+       DATE AND TIME
+       ===================================================== */
+
+    function updateDateTime() {
+
+        const now = new Date();
+
+        const options = {
+            weekday: "long",
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        };
+
+        const datePart = now.toLocaleDateString(
+            "en-GB",
+            options
+        );
+
+        let hours = now.getHours();
+
+        const minutes = String(
+            now.getMinutes()
+        ).padStart(2, "0");
+
+        const seconds = String(
+            now.getSeconds()
+        ).padStart(2, "0");
+
+        const ampm = hours >= 12 ? "PM" : "AM";
+
+        hours = hours % 12;
+
+        hours = hours === 0 ? 12 : hours;
+
+        const timePart =
+            String(hours).padStart(2, "0")
+            + ":"
+            + minutes
+            + ":"
+            + seconds
+            + " "
+            + ampm;
+
+        document.getElementById("dateTime").textContent =
+            "📅 " + datePart + " | " + timePart;
+    }
+
+    updateDateTime();
+
+    setInterval(updateDateTime, 1000);
+
+
+    /* =====================================================
+       SEARCH
+       ===================================================== */
+
+    const searchInput =
+        document.getElementById("searchInput");
+
+    const searchButton =
+        document.getElementById("searchButton");
+
+    const noticeRows =
+        document.querySelectorAll(".notice-row");
+
+    const noResults =
+        document.getElementById("noResults");
+
+    const totalCount =
+        document.getElementById("totalCount");
+
+
+    function performSearch() {
+
+        const searchText =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+        let visibleCount = 0;
+
+        noticeRows.forEach(function(row) {
+
+            const rowText =
+                row.dataset.search.toLowerCase();
+
+            if (
+                searchText === ""
+                || rowText.includes(searchText)
+            ) {
+
+                row.style.display = "";
+
+                visibleCount++;
+
+            } else {
+
+                row.style.display = "none";
+
+            }
+
+        });
+
+
+        if (visibleCount === 0) {
+
+            noResults.style.display = "block";
+
+        } else {
+
+            noResults.style.display = "none";
+
+        }
+
+
+        totalCount.textContent = visibleCount;
+    }
+
+
+    searchInput.addEventListener(
+        "input",
+        performSearch
+    );
+
+
+    searchButton.addEventListener(
+        "click",
+        performSearch
+    );
+
+
+    /* =====================================================
+       SMART SEARCH SHORTCUTS
+       ===================================================== */
+
+    searchInput.addEventListener(
+        "keydown",
+        function(event) {
+
+            if (event.key === "Enter") {
+
+                performSearch();
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       CATEGORY CARDS
+       ===================================================== */
+
+    const categoryCards =
+        document.querySelectorAll(".category-card");
+
+
+    categoryCards.forEach(function(card) {
+
+        card.addEventListener(
+            "click",
+            function() {
+
+                const category =
+                    card.dataset.category;
+
+                searchInput.value = category;
+
+                performSearch();
+
+                document
+                    .querySelector(".notice-table")
+                    .scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+            }
+        );
+
+    });
+
+
+    /* =====================================================
+       VIEW NOTICE
+       ===================================================== */
+
+    function viewNotice() {
+
+        alert(
+            "Exam Notice\n\n" +
+            "This notice can be connected to the actual " +
+            "uploaded file through the backend."
+        );
+
+    }
+
+
+    /* =====================================================
+       NOTIFICATION BUTTON
+       ===================================================== */
+
+    const notificationButton =
+        document.getElementById(
+            "notificationButton"
+        );
+
+    const notificationMessage =
+        document.getElementById(
+            "notificationMessage"
+        );
+
+
+    notificationButton.addEventListener(
+        "click",
+        function() {
+
+            if (
+                notificationMessage.style.display
+                === "block"
+            ) {
+
+                notificationMessage.style.display =
+                    "none";
+
+            } else {
+
+                notificationMessage.style.display =
+                    "block";
+
+            }
+
+        }
+    );
+
+
+    /* =====================================================
+       UPCOMING DEADLINES
+       ===================================================== */
+
+    document
+        .getElementById("viewDeadlines")
+        .addEventListener(
+            "click",
+            function() {
+
+                alert(
+                    "No upcoming deadlines available."
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       YEAR-WISE ARCHIVE
+       ===================================================== */
+
+    document
+        .getElementById("archiveButton")
+        .addEventListener(
+            "click",
+            function() {
+
+                alert(
+                    "Year-wise archive will be available " +
+                    "when previous-year notices are added."
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById("archiveLink")
+        .addEventListener(
+            "click",
+            function() {
+
+                alert(
+                    "No previous year notices available yet."
+                );
+
+            }
+        );
+
+
+    /* =====================================================
+       INITIAL CATEGORY COUNTS
+       ===================================================== */
+
+    const categoryCounts = {
+
+        Placement: 0,
+        Scholarship: 0,
+        Exams: 1,
+        Hackathon: 0,
+        Events: 0,
+        Workshops: 0,
+        Circulars: 0,
+        Holidays: 0
+
+    };
+
+
+    document.getElementById(
+        "countPlacement"
+    ).textContent =
+        categoryCounts.Placement;
+
+
+    document.getElementById(
+        "countScholarship"
+    ).textContent =
+        categoryCounts.Scholarship;
+
+
+    document.getElementById(
+        "countExams"
+    ).textContent =
+        categoryCounts.Exams;
+
+
+    document.getElementById(
+        "countHackathon"
+    ).textContent =
+        categoryCounts.Hackathon;
+
+
+    document.getElementById(
+        "countEvents"
+    ).textContent =
+        categoryCounts.Events;
+
+
+    document.getElementById(
+        "countWorkshops"
+    ).textContent =
+        categoryCounts.Workshops;
+
+
+    document.getElementById(
+        "countCirculars"
+    ).textContent =
+        categoryCounts.Circulars;
+
+
+    document.getElementById(
+        "countHolidays"
+    ).textContent =
+        categoryCounts.Holidays;
+
+</script>
+
+</body>
+</html>
